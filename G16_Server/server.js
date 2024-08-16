@@ -7,8 +7,14 @@ require('dotenv').config(); // Load environment variables
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Configure CORS to allow requests from your frontend
+const corsOptions = {
+  origin: 'https://g16-client.vercel.app', // Replace with your frontend URL
+  optionsSuccessStatus: 200, // For legacy browser support
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions)); // Use the CORS middleware with the options
 app.use(express.json());
 
 // Routes
