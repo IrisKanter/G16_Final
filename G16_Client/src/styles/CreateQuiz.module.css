@@ -1,0 +1,86 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: auto; /* Allow scrolling */
+}
+
+.createQuizContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: 1rem; /* Optional */
+  box-sizing: border-box;
+  overflow: auto; /* Ensure scrolling is enabled */
+}
+
+.formContainer {
+  background-color: var(--color-bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+
+.formHeading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+}
+
+.formControl {
+  margin-bottom: 1rem;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.formInput,
+.formSelect {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  border: 1px solid var(--color-input-border);
+}
+
+.formButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.questionList {
+  margin-bottom: 1.5rem;
+}
+
+.questionItem {
+  padding: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--color-bg);
+  margin-bottom: 0.5rem;
+  border: 2px solid var(--color-input-border);
+  transition: border-color 0.3s ease;
+}
+
+.questionItem:hover {
+  border-color: var(--color-primary);
+}
+
+.questionItem.selected {
+  background-color: var(--color-highlight);
+  color: white;
+  border-color: var(--color-highlight);
+}

@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles for the application */
+:root {
+  --color-bg-light: #f7fafc;
+  --color-bg-dark: #1a202c;
+  --color-text-light: #1a202c;
+  --color-text-dark: #f7fafc;
+  --color-primary: #3182ce;
+  --color-primary-hover: #0056b3;
+  --color-primary-border: #004080;
+  --color-secondary: #2d3748;
+  --color-input-border: #ccc;
+  --color-button-bg: #007bff;
+  --color-button-bg-hover: #0056b3;
+  --color-highlight: #3182ce;
+  --color-error: #ff0000;
+  --color-success: #00ff00;
+}
+
+/* Apply these variables based on the current theme */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden; /* Ensure no scrollbars appear */
+}
+
+/* Background image with filters applied using pseudo-elements */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('images/web.jpeg'); /* Adjust the path as needed */
+  background-size: cover; /* Ensures the image covers the whole viewport */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents repeating the image */
+  z-index: -1; /* Ensures the image is behind all other content */
+  transition: filter 0.3s ease; /* Smooth transition for filter changes */
+}
+
+/* Light mode */
+body.light {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+}
+
+body.light::before {
+  filter: none; /* No filter for light mode */
+}
+
+/* Dark mode */
+body.dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark);
+}
+
+body.dark::before {
+  filter: brightness(40%) contrast(120%); /* Adjust brightness and contrast for dark mode */
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--color-primary);
+  color: white;
+  z-index: 1000;
+}
+
+.menu-button-link {
+  text-decoration: none;
+}
+
+.menu-button, .theme-toggle-button {
+  background-color: var(--color-primary);
+  color: white;
+  border: 2px solid var(--color-primary-hover);
+  padding: 1.2rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, border-color 0.3s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.menu-button:hover, .theme-toggle-button:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-border);
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  margin-top: 4rem;
+  background-color: var(--color-bg-dark);
+}
+
+/* Global form styles with added specificity */
+body.light form, 
+body.dark form {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--color-secondary); /* Ensures a solid background */
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 2rem;
+}
+
+/* Ensure light mode form has a solid background */
+body.light form {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+}
+
+/* Ensure dark mode form has a solid background */
+body.dark form {
+  background-color: var(--color-secondary);
+  color: var(--color-text-dark);
+}
+
+/* Form input and button colors inherit from the form */
+form label, 
+form button {
+  color: inherit;
+}
+
+/* Input fields in the form */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 5px;
+  background-color: inherit;
+  color: inherit;
+}
+
+/* Placeholder text color */
+input::placeholder {
+  color: inherit;
+}
+
+/* Focus state for input fields */
+input:focus {
+  outline: none;
+  border-color: var(--color-button-bg);
+}
+
+/* Button styling */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--color-button-bg);
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Button hover state */
+button:hover {
+  background-color: var(--color-button-bg-hover);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-button, .theme-toggle-button {
+    margin: 0.5rem 0;
+  }
+
+  .max-page-height {
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  form {
+    padding: 1.5rem;
+  }
+}

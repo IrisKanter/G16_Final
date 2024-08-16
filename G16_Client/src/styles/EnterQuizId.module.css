@@ -1,0 +1,52 @@
+.enterQuizIdContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.formContainer {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: var(--color-bg-secondary);
+  max-width: 400px;
+  width: 100%;
+  border: 1px solid var(--color-border);
+}
+
+.formHeading {
+  font-size: 2.5rem; /* Make the heading bigger */
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.formControl {
+  margin-bottom: 1rem;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  border: 1px solid var(--color-input-border);
+}
+
+.formButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

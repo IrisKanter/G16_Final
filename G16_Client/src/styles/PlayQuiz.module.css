@@ -1,0 +1,59 @@
+.quizContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.heading {
+  font-size: 2.5rem; /* Increased font size */
+  font-weight: bold; /* Make the heading bold */
+  text-align: center; /* Center the heading */
+  margin-bottom: 1.5rem; /* Add space below the heading */
+  color: var(--color-text); /* Ensure the color matches your theme */
+}
+
+.questionContainer {
+  background-color: var(--color-bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.question {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--color-text);
+}
+
+.answerOption {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid var(--color-primary); /* Border added */
+  color: var(--color-text); /* Ensure text color is correct */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.answerOption:hover {
+  border-color: var(--color-primary-hover); /* Change border color on hover */
+}
+
+.selectedAnswer {
+  background-color: var(--color-highlight);
+  color: white;
+  border-color: var(--color-highlight); /* Change border color when selected */
+}
+
+.nextButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  background-color: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  margin-top: 1rem; /* Add some spacing above the button */
+}
