@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/MainMenu.module.css';
+import app from "../App";
 
 /**
  * MainMenu component for navigation.
@@ -9,7 +10,7 @@ import styles from '../styles/MainMenu.module.css';
  * It uses the `useNavigate` hook from `react-router-dom` to handle navigation based on the 
  * button clicked.
  */
-const MainMenu = () => {
+const MainMenu = ({name}) => {
   const navigate = useNavigate(); // Hook to programmatically navigate between routes
 
   const handleNavigation = (path) => {
@@ -19,6 +20,7 @@ const MainMenu = () => {
   return (
     <div className={styles.mainMenuContainer}>
       <form className={styles.menuOptions}>
+      <h2 className={styles.formHeading}>Welcome, {name}! </h2>
         <button type="button" className={styles.menuButton} onClick={() => handleNavigation('/enter-quiz-id')}>
           Play Quiz
         </button>

@@ -1,24 +1,44 @@
 .mainMenuContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: var(--color-bg);
-  }
-  
-  .menuOptions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .menuButton {
-    margin: 0.5rem 0;
-    padding: 1rem 2rem;
-    background-color: var(--color-primary);
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: 1rem; /* Add padding to avoid content sticking to the edges */
+}
+
+.menuOptions {
+  background-color: var(--color-bg-secondary);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  overflow-y: auto; /* Allow scrolling within the menu if needed */
+  max-height: 100%; /* Allow the menu container to grow and scroll */
+}
+
+.formHeading {
+  font-size: 2.5rem; /* Match the title size */
+  font-weight: bold; /* Make the heading bold */
+  text-align: center; /* Center the heading */
+  margin-bottom: 1.5rem; /* Add space below the heading */
+  color: var(--color-text); /* Ensure the color matches your theme */
+}
+
+.menuButton {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.menuButton:hover {
+  background-color: var(--color-primary-hover);
+}
