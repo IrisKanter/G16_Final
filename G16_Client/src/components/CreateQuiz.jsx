@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../styles/CreateQuiz.module.css';
 
+/**
+ * CreateQuiz component allows the user to create a custom quiz.
+ * Users can select the difficulty, category, and number of questions.
+ * The selected questions are then saved to the backend, and a Quiz ID is generated.
+ */
+
 const CreateQuiz = () => {
   const [difficulty, setDifficulty] = useState('medium');
   const [category, setCategory] = useState('');
@@ -55,7 +61,7 @@ const CreateQuiz = () => {
     }
   };
 
-  // Save quiz to your backend
+  // Save quiz to backend
   const saveQuiz = (e) => {
     e.preventDefault(); // Prevent the form from submitting traditionally
     if (selectedQuestions.length === parseInt(numberOfQuestions, 10)) {

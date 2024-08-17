@@ -3,7 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/PlayQuiz.module.css';
 
-
+/**
+ * PlayQuiz component allows users to play a quiz fetched from the backend.
+ * It displays each question one at a time, allows users to select answers, and calculates the final score.
+ */
 
 const PlayQuiz = () => {
   const { quizId } = useParams();
@@ -18,6 +21,8 @@ const PlayQuiz = () => {
 
   const apiUrl = import.meta.env.VITE_API_URL; // Use Vite's environment variable access pattern
 
+  
+  // Fetch the quiz data from the backend when the component mounts
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -33,25 +38,31 @@ const PlayQuiz = () => {
 
     fetchQuiz();
   }, [quizId, apiUrl]);
-
+  
+  // Handle answer selection by updating the selected answer state.
   const handleAnswerChange = (answer) => {
     setSelectedAnswer(answer);
   };
 
+  // Handle moving to the next question or finishing the quiz.
   const handleNextQuestion = (e) => {
     e.preventDefault(); // Prevent the form from submitting
     const correctAnswer = quizQuestions[currentQuestionIndex].correctAnswer;
 
+    // Update the score if the selected answer is correct
     if (selectedAnswer === correctAnswer) {
       setScore((prevScore) => prevScore + 1);
     }
 
+    // Save the selected answer to the userAnswers array
     setUserAnswers((prevAnswers) => [...prevAnswers, selectedAnswer]);
     setSelectedAnswer(null);
 
+    // Check if there are more questions, otherwise navigate to the summary page
     if (currentQuestionIndex + 1 < quizQuestions.length) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
+      // Navigate to the summary page with the quiz data
       navigate('/quiz-summary', {
         state: {
           quizQuestions,
@@ -62,6 +73,7 @@ const PlayQuiz = () => {
     }
   };
 
+  // Show a loading message while the quiz data is being fetched
   if (loading) {
     return (
       <div className={styles.quizContainer}>
@@ -70,6 +82,7 @@ const PlayQuiz = () => {
     );
   }
 
+  // Show an error message if the quiz is not found  
   if (error) {
     return (
       <div className={styles.quizContainer}>
@@ -78,6 +91,7 @@ const PlayQuiz = () => {
     );
   }
 
+  // Get the current question from the quizQuestions array
   const currentQuestion = quizQuestions[currentQuestionIndex];
 
   return (

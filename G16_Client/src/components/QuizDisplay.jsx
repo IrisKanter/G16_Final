@@ -1,6 +1,11 @@
 import React from 'react';
 import styles from '../styles/QuizDisplay.module.css';
 
+
+/**
+ * QuizDisplay component renders a quiz question with multiple choice options.
+ * It allows users to select an answer and submit it.
+ */
 const QuizDisplay = ({ question, options, selectedAnswer, onAnswerSelect, onSubmit }) => {
   return (
     <div className={styles.quizDisplayContainer}>

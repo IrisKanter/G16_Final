@@ -2,6 +2,11 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/QuizSummary.module.css';
 
+/**
+ * QuizSummary component displays the quiz results, showing the user's score,
+ * their answers, and the correct answers for each question.
+ */
+
 const QuizSummary = () => {
   const location = useLocation();
   const navigate = useNavigate();
