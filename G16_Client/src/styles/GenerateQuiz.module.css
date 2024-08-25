@@ -101,3 +101,20 @@
   border: 1px solid var(--color-input-border);
   margin-bottom: 1rem;
 }
+
+/* Loading indicator styles */
+.loadingText {
+  color: var(--color-text);
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.25rem; /* Adjust the size to be visible */
+  font-weight: bold; /* Make it stand out */
+  animation: blink 1.5s infinite; /* Simple blinking animation */
+}
+
+/* Simple blinking animation */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}

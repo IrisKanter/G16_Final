@@ -13,7 +13,8 @@ const GenerateQuiz = () => {
   const [categories, setCategories] = useState([]);
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [quizId, setQuizId] = useState(''); // State for quizId only
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Loading state for fetching categories
+  const [generating, setGenerating] = useState(false); // Loading state for generating quiz
   const [error, setError] = useState(null);
 
   const apiUrl = import.meta.env.VITE_API_URL; // Backend API URL
@@ -41,6 +42,7 @@ const GenerateQuiz = () => {
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setGenerating(true); // Start generating state
     try {
       const response = await axios.get('https://the-trivia-api.com/api/questions', {
         params: {
@@ -59,6 +61,8 @@ const GenerateQuiz = () => {
     } catch (err) {
       console.error('There was an error generating the quiz!', err);
       setError('Failed to generate quiz');
+    } finally {
+      setGenerating(false); // End generating state
     }
   };
 
@@ -120,14 +124,18 @@ const GenerateQuiz = () => {
                 className={styles.formInput}
               />
             </div>
-            <button type="submit" className={styles.formButton}>
-              Generate Quiz
+            <button
+              type="submit"
+              className={styles.formButton}
+              disabled={generating} // Disable button while generating
+            >
+              {generating ? 'Generating Quiz...' : 'Generate Quiz'}
             </button>
           </form>
         ) : (
           <div className={styles.generatedQuizContainer}>
             <form>
-            <h2 className={styles.formHeading}>Generated Quiz</h2>
+              <h2 className={styles.formHeading}>Generated Quiz</h2>
               {quizQuestions.map((question, index) => (
                 <div key={index} className={styles.questionItem}>
                   <h3>{question.question}</h3>
@@ -153,6 +161,8 @@ const GenerateQuiz = () => {
             </form>
           </div>
         )}
+        {/* Show loading indicator when generating quiz */}
+        {generating && <p className={styles.loadingText}>Please wait while we generate your quiz...</p>}
       </div>
     </div>
   );
