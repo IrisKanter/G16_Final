@@ -7,7 +7,6 @@ import styles from '../styles/PlayQuiz.module.css';
  * PlayQuiz component allows users to play a quiz fetched from the backend.
  * It displays each question one at a time, allows users to select answers, and calculates the final score.
  */
-
 const PlayQuiz = () => {
   const { quizId } = useParams();
   const navigate = useNavigate();
@@ -21,13 +20,34 @@ const PlayQuiz = () => {
 
   const apiUrl = import.meta.env.VITE_API_URL; // Use Vite's environment variable access pattern
 
-  
-  // Fetch the quiz data from the backend when the component mounts
+  /**
+   * Shuffles an array to ensure the answers appear in a random order.
+   */
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  /**
+   * Fetch the quiz data from the backend when the component mounts.
+   * The questions are shuffled to randomize the order of the answers.
+   */
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
         const response = await axios.get(`${apiUrl}/api/quizzes/${quizId}`);
-        setQuizQuestions(response.data.questions);
+        const questionsWithShuffledAnswers = response.data.questions.map((question) => {
+          // Shuffle the answers
+          const allAnswers = [...question.incorrectAnswers, question.correctAnswer];
+          return {
+            ...question,
+            answers: shuffleArray(allAnswers), // Shuffle the answers array
+          };
+        });
+        setQuizQuestions(questionsWithShuffledAnswers);
       } catch (err) {
         console.error('Error fetching quiz:', err);
         setError('Quiz not found');
@@ -38,13 +58,18 @@ const PlayQuiz = () => {
 
     fetchQuiz();
   }, [quizId, apiUrl]);
-  
-  // Handle answer selection by updating the selected answer state.
+
+  /**
+   * Handle answer selection by updating the selected answer state.
+   */
   const handleAnswerChange = (answer) => {
     setSelectedAnswer(answer);
   };
 
-  // Handle moving to the next question or finishing the quiz.
+  /**
+   * Handle moving to the next question or finishing the quiz.
+   * This method also calculates the score based on correct answers.
+   */
   const handleNextQuestion = (e) => {
     e.preventDefault(); // Prevent the form from submitting
     const correctAnswer = quizQuestions[currentQuestionIndex].correctAnswer;
@@ -82,7 +107,7 @@ const PlayQuiz = () => {
     );
   }
 
-  // Show an error message if the quiz is not found  
+  // Show an error message if the quiz is not found
   if (error) {
     return (
       <div className={styles.quizContainer}>
@@ -101,7 +126,7 @@ const PlayQuiz = () => {
         <div className={styles.questionContainer}>
           <h3 className={styles.question}>{currentQuestion.question}</h3>
           <ul>
-            {currentQuestion.incorrectAnswers.concat(currentQuestion.correctAnswer).map((answer, idx) => (
+            {currentQuestion.answers.map((answer, idx) => (
               <li
                 key={idx}
                 className={`${styles.answerOption} ${selectedAnswer === answer ? styles.selectedAnswer : ''}`}
