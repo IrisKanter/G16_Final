@@ -17,24 +17,30 @@ const CreateQuiz = () => {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [quizId, setQuizId] = useState(''); // State for quizId only
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const triviaApiUrl = 'https://the-trivia-api.com/api'; // Trivia API URL
   const backendApiUrl = import.meta.env.VITE_API_URL; // Your backend API URL
 
   // Fetch categories from The Trivia API
   useEffect(() => {
+    setLoading(true); // Start loading
     axios.get(`${triviaApiUrl}/categories`)
       .then(response => {
         setCategories(Object.keys(response.data));
       })
       .catch(error => {
         console.error('There was an error fetching the categories!', error);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   }, []);
 
   // Fetch questions from The Trivia API
   const fetchQuestions = (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
     const fetchCount = numberOfQuestions * 3; // Fetch three times as many questions as needed
     axios.get(`${triviaApiUrl}/questions`, {
       params: {
@@ -49,6 +55,9 @@ const CreateQuiz = () => {
       })
       .catch(error => {
         console.error('There was an error fetching the questions!', error);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   };
 
@@ -64,6 +73,7 @@ const CreateQuiz = () => {
   // Save quiz to backend
   const saveQuiz = (e) => {
     e.preventDefault(); // Prevent the form from submitting traditionally
+    setLoading(true); // Start loading
     if (selectedQuestions.length === parseInt(numberOfQuestions, 10)) {
       axios.post(`${backendApiUrl}/api/quizzes/create`, { questions: selectedQuestions })
         .then(response => {
@@ -73,11 +83,23 @@ const CreateQuiz = () => {
         })
         .catch(error => {
           console.error('There was an error saving the quiz!', error);
+        })
+        .finally(() => {
+          setLoading(false); // Stop loading
         });
     } else {
+      setLoading(false); // Stop loading if selection is incomplete
       alert(`Please select exactly ${numberOfQuestions} questions.`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className={styles.createQuizContainer}>
+        <p className={styles.loadingText}>Please wait while we process your request...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.createQuizContainer}>
