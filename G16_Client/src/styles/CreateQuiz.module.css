@@ -84,3 +84,24 @@ html, body {
   color: white;
   border-color: var(--color-highlight);
 }
+
+/* Loading indicator styles */
+.loadingText {
+  color: var(--color-text);
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.25rem; /* Adjust the size to be visible */
+  font-weight: bold; /* Make it stand out */
+  animation: blink 1.5s infinite; /* Simple blinking animation */
+}
+
+/* Simple blinking animation */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.blinking {
+  animation: blink 1s infinite; /* Apply the blink animation over 1 second, repeating infinitely */
+}
