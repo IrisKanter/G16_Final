@@ -71,6 +71,13 @@ body.dark::before {
   min-height: 100vh;
 }
 
+/* Ensures the element can grow and scroll if necessary */
+.max-page-height {
+  max-height: 100vh; /* Set to the maximum desired height */
+  overflow-y: auto;  /* Enable vertical scrolling if content exceeds max height */
+  overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
 .header-container {
   position: fixed;
   top: 0;
@@ -113,13 +120,6 @@ body.dark::before {
   padding: 2rem;
   margin-top: 4rem;
   background-color: var(--color-bg-dark);
-}
-
-/* Ensure maximum page height with scrolling */
-.max-page-height {
-  max-height: 100vh; /* Set to the maximum desired height */
-  overflow-y: auto;  /* Enable vertical scrolling if content exceeds max height */
-  overflow-x: hidden; /* Disable horizontal scrolling */
 }
 
 /* Global form styles with added specificity */
@@ -202,12 +202,6 @@ button:hover {
 
   .menu-button, .theme-toggle-button {
     margin: 0.5rem 0;
-  }
-
-  .max-page-height {
-    max-height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 
   .main-content {
