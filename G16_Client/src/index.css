@@ -115,6 +115,13 @@ body.dark::before {
   background-color: var(--color-bg-dark);
 }
 
+/* Ensure maximum page height with scrolling */
+.max-page-height {
+  max-height: 100vh; /* Set to the maximum desired height */
+  overflow-y: auto;  /* Enable vertical scrolling if content exceeds max height */
+  overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
 /* Global form styles with added specificity */
 body.light form, 
 body.dark form {
