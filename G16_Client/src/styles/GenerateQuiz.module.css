@@ -102,6 +102,14 @@
   margin-bottom: 1rem;
 }
 
+.copyNotification {
+  color: green;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
 /* Loading indicator styles */
 .loadingText {
   color: var(--color-text);
@@ -118,3 +126,4 @@
   50% { opacity: 0.5; }
   100% { opacity: 1; }
 }
+

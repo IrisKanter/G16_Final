@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import useCreateQuiz from '../lib/useCreateQuiz';
 import styles from '../styles/CreateQuiz.module.css';
 
 /**
@@ -7,91 +7,26 @@ import styles from '../styles/CreateQuiz.module.css';
  * Users can select the difficulty, category, and number of questions.
  * The selected questions are then saved to the backend, and a Quiz ID is generated.
  */
-
 const CreateQuiz = () => {
-  const [difficulty, setDifficulty] = useState('medium');
-  const [category, setCategory] = useState('');
-  const [numberOfQuestions, setNumberOfQuestions] = useState(5);
-  const [categories, setCategories] = useState([]);
-  const [availableQuestions, setAvailableQuestions] = useState([]);
-  const [selectedQuestions, setSelectedQuestions] = useState([]);
-  const [quizId, setQuizId] = useState(''); // State for quizId only
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false); // Add loading state
-
   const triviaApiUrl = 'https://the-trivia-api.com/api'; // Trivia API URL
   const backendApiUrl = import.meta.env.VITE_API_URL; // Your backend API URL
 
-  // Fetch categories from The Trivia API
-  useEffect(() => {
-    setLoading(true); // Start loading
-    axios.get(`${triviaApiUrl}/categories`)
-      .then(response => {
-        setCategories(Object.keys(response.data));
-      })
-      .catch(error => {
-        console.error('There was an error fetching the categories!', error);
-      })
-      .finally(() => {
-        setLoading(false); // Stop loading
-      });
-  }, []);
-
-  // Fetch questions from The Trivia API
-  const fetchQuestions = (e) => {
-    e.preventDefault();
-    setLoading(true); // Start loading
-    const fetchCount = numberOfQuestions * 3; // Fetch three times as many questions as needed
-    axios.get(`${triviaApiUrl}/questions`, {
-      params: {
-        categories: category,
-        limit: fetchCount,
-        difficulty: difficulty,
-      }
-    })
-      .then(response => {
-        setAvailableQuestions(response.data);
-        setStep(2);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the questions!', error);
-      })
-      .finally(() => {
-        setLoading(false); // Stop loading
-      });
-  };
-
-  // Toggle question selection
-  const toggleQuestionSelection = (question) => {
-    if (selectedQuestions.includes(question)) {
-      setSelectedQuestions(selectedQuestions.filter(q => q !== question));
-    } else if (selectedQuestions.length < numberOfQuestions) {
-      setSelectedQuestions([...selectedQuestions, question]);
-    }
-  };
-
-  // Save quiz to backend
-  const saveQuiz = (e) => {
-    e.preventDefault(); // Prevent the form from submitting traditionally
-    setLoading(true); // Start loading
-    if (selectedQuestions.length === parseInt(numberOfQuestions, 10)) {
-      axios.post(`${backendApiUrl}/api/quizzes/create`, { questions: selectedQuestions })
-        .then(response => {
-          const { quizId } = response.data;
-          setQuizId(quizId); // Save only the quizId
-          setStep(3);
-        })
-        .catch(error => {
-          console.error('There was an error saving the quiz!', error);
-        })
-        .finally(() => {
-          setLoading(false); // Stop loading
-        });
-    } else {
-      setLoading(false); // Stop loading if selection is incomplete
-      alert(`Please select exactly ${numberOfQuestions} questions.`);
-    }
-  };
+  const {
+    difficulty, setDifficulty,
+    category, setCategory,
+    numberOfQuestions, setNumberOfQuestions,
+    categories,
+    availableQuestions,
+    selectedQuestions,
+    quizId,
+    step,
+    loading,
+    copyNotification, // Get the copy notification from the hook
+    fetchQuestions,
+    toggleQuestionSelection,
+    saveQuiz,
+    handleCopyQuizId, // Get the handleCopyQuizId function from the hook
+  } = useCreateQuiz(triviaApiUrl, backendApiUrl);
 
   if (loading) {
     return (
@@ -183,11 +118,14 @@ const CreateQuiz = () => {
                 />
                 <button
                   type="button"
-                  onClick={() => navigator.clipboard.writeText(quizId)}
+                  onClick={handleCopyQuizId} // Use the copy handler from the hook
                   className={styles.formButton}
                 >
                   Copy Quiz ID
                 </button>
+                {copyNotification && (
+                  <p className={styles.copyNotification}>{copyNotification}</p> // Display the copy notification
+                )}
               </div>
             </div>
           </form>

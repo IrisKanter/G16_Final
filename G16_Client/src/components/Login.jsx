@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useLogin } from '../lib/useLogin'; // Import the custom hook
 import styles from '../styles/Login.module.css';
 
 /**
@@ -9,12 +10,7 @@ import styles from '../styles/Login.module.css';
  * providing the entered name.
  */
 const Login = ({ onLogin }) => {
-  const [name, setName] = useState(''); // State to manage the entered name
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    onLogin(name); // Call the onLogin function with the entered name
-  };
+  const { name, handleNameChange, handleSubmit } = useLogin(onLogin); // Use the custom hook
 
   return (
     <div className={styles.loginContainer}>
@@ -25,7 +21,7 @@ const Login = ({ onLogin }) => {
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)} // Update state on input change
+            onChange={handleNameChange} // Use the handleNameChange from the hook
             className={styles.formInput}
             required // Make the input field required
           />

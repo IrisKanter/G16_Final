@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useFetchQuiz } from '../lib/useFetchQuiz'; // Updated import
 import styles from '../styles/EnterQuizId.module.css';
 
 /**
@@ -11,24 +11,16 @@ const EnterQuizId = () => {
   const [quizId, setQuizId] = useState('');
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
+  const { fetchQuiz, loading, error } = useFetchQuiz(apiUrl); // Using the custom hook
 
   // Handle form submission and quiz retrieval
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.get(`${apiUrl}/api/quizzes/${quizId}`);
-
-      if (response.data) {
-        navigate(`/play-quiz/${quizId}`);
-      }
-    } catch (err) {
-      if (err.response && err.response.status === 404) {
-        window.alert('Quiz not found. Please check the ID and try again.');
-      } else {
-        window.alert('An unexpected error occurred. Please try again later.');
-        console.error('Error fetching quiz:', err);
-      }
+    const quiz = await fetchQuiz(quizId);
+    if (quiz) {
+      navigate(`/play-quiz/${quizId}`);
+    } else {
+      window.alert(error);
     }
   };
 
@@ -46,8 +38,8 @@ const EnterQuizId = () => {
             required
           />
         </div>
-        <button type="submit" className={styles.formButton}>
-          Start Quiz
+        <button type="submit" className={styles.formButton} disabled={loading}>
+          {loading ? 'Loading...' : 'Start Quiz'}
         </button>
       </form>
     </div>

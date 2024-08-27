@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import useGenerateQuiz from '../lib/useGenerateQuiz'; // Import the custom hook
 import styles from '../styles/GenerateQuiz.module.css';
 
 /**
@@ -7,64 +7,23 @@ import styles from '../styles/GenerateQuiz.module.css';
  * The generated quiz is saved on the backend, and a shareable Quiz ID is provided.
  */
 const GenerateQuiz = () => {
-  const [difficulty, setDifficulty] = useState('medium');
-  const [category, setCategory] = useState('');
-  const [numberOfQuestions, setNumberOfQuestions] = useState(10);
-  const [categories, setCategories] = useState([]);
-  const [quizQuestions, setQuizQuestions] = useState([]);
-  const [quizId, setQuizId] = useState(''); // State for quizId only
-  const [loading, setLoading] = useState(true); // Loading state for fetching categories
-  const [generating, setGenerating] = useState(false); // Loading state for generating quiz
-  const [error, setError] = useState(null);
-
-  const apiUrl = import.meta.env.VITE_API_URL; // Backend API URL
-
-  // Fetch categories from the Trivia API
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('https://the-trivia-api.com/api/categories');
-        setCategories(Object.keys(response.data));
-      } catch (err) {
-        console.error('There was an error fetching the categories!', err);
-        setError('Failed to load categories');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  /**
-   * Handles the form submission to generate a quiz.
-   * Fetches questions from the Trivia API and saves them to the backend.
-   */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setGenerating(true); // Start generating state
-    try {
-      const response = await axios.get('https://the-trivia-api.com/api/questions', {
-        params: {
-          categories: category,
-          limit: numberOfQuestions,
-          difficulty,
-        },
-      });
-
-      const questions = response.data;
-      const quizResponse = await axios.post(`${apiUrl}/api/quizzes/create`, { questions });
-      const quizId = quizResponse.data.quizId;
-
-      setQuizQuestions(questions);
-      setQuizId(quizId); // Save only the quizId
-    } catch (err) {
-      console.error('There was an error generating the quiz!', err);
-      setError('Failed to generate quiz');
-    } finally {
-      setGenerating(false); // End generating state
-    }
-  };
+  const {
+    difficulty,
+    setDifficulty,
+    category,
+    setCategory,
+    numberOfQuestions,
+    setNumberOfQuestions,
+    categories,
+    quizQuestions,
+    quizId,
+    loading,
+    generating,
+    error,
+    copyNotification,
+    handleSubmit,
+    handleCopyQuizId,
+  } = useGenerateQuiz();
 
   if (loading) {
     return (
@@ -139,7 +98,6 @@ const GenerateQuiz = () => {
               {quizQuestions.map((question, index) => (
                 <div key={index} className={styles.questionItem}>
                   <h3>{question.question}</h3>
-                  {/* Answers are not displayed */}
                 </div>
               ))}
               <div className={styles.formControl}>
@@ -152,16 +110,18 @@ const GenerateQuiz = () => {
                 />
                 <button
                   type="button"
-                  onClick={() => navigator.clipboard.writeText(quizId)}
+                  onClick={handleCopyQuizId} // Handle copy quiz ID
                   className={styles.formButton}
                 >
                   Copy Quiz ID
                 </button>
+                {copyNotification && (
+                  <p className={styles.copyNotification}>{copyNotification}</p>
+                )}
               </div>
             </form>
           </div>
         )}
-        {/* Show loading indicator when generating quiz */}
         {generating && <p className={styles.loadingText}>Please wait while we generate your quiz...</p>}
       </div>
     </div>
