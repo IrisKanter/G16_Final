@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 // Configure CORS to allow requests from your frontend
 const corsOptions = {
-  origin: 'http://localhost:5173', // Replace with your frontend URL
+  origin: 'https://g16-client.onrender.com', // Replace with your frontend URL
   optionsSuccessStatus: 200, // For legacy browser support
 };
 
