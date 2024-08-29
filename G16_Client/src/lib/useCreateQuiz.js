@@ -36,7 +36,7 @@ const useCreateQuiz = (triviaApiUrl, backendApiUrl) => {
   const fetchQuestions = (e) => {
     e.preventDefault();
     setLoading(true);
-    const fetchCount = numberOfQuestions * 3; // Fetch three times as many questions as needed
+    const fetchCount = numberOfQuestions * 2; // Fetch two times as many questions as needed
     axios.get(`${triviaApiUrl}/questions`, {
       params: {
         categories: category,
